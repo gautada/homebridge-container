@@ -27,8 +27,11 @@ RUN npm install -g --unsafe-perm debug@4.3.1 homebridge homebridge-config-ui-x
 RUN npm install -g --unsafe-perm homebridge-ring \
                                  homebridge-nest \
                                  homebridge-tplink-smarthome
-  
-COPY config.json /root/.homebridge/config.json
-COPY entrypoint /entrypoint
+
+RUN mkdir /etc/homebridge /root/.homebridge \
+ && ln -s /etc/homebridge/config.json /root/.homebridge/config.json
+ 
+COPY config.json /etc/homebridge/config.json
+# COPY entrypoint /entrypoint
 
 ENTRYPOINT ["/usr/bin/homebridge", "-D", "-Q"]
