@@ -1,0 +1,3 @@
+# Ignore Xcode files
+*.xcodeproj/
+config.json
