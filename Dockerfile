@@ -31,7 +31,7 @@ RUN npm install -g --unsafe-perm homebridge-ring \
 RUN mkdir /etc/homebridge /root/.homebridge \
  && ln -s /etc/homebridge/config.json /root/.homebridge/config.json
  
-COPY config.json /etc/homebridge/config.json
+# COPY config.json /etc/homebridge/config.json
 # COPY entrypoint /entrypoint
 
 ENTRYPOINT ["/usr/bin/homebridge", "-D", "-Q"]

@@ -1,0 +1,24 @@
+#!/bin/sh
+
+export DOCKER_HOST=aarch64-docker.gautier.local
+docker build --tag homebridge:build . --no-cache\
+ && docker run --detach --rm --name homebridge homebridge:build \
+ && export BUILD_VERSION="$(docker exec -it homebridge /usr/bin/homebridge --version | tail -n 1 |  tr -d '\r')" \
+ && docker stop homebridge \
+ && docker tag homebridge:build gautada/homebridge:$BUILD_VERSION-arm \
+ && docker push gautada/homebridge:$BUILD_VERSION-arm
+
+export DOCKER_HOST=amd64-docker.gautier.local
+docker build --tag homebridge:build . --no-cache \
+ && docker tag homebridge:build gautada/homebridge:$BUILD_VERSION-x86 \
+ && docker push gautada/homebridge:$BUILD_VERSION-x86
+
+export DOCKER_CLI_EXPERIMENTAL=enabled
+docker manifest create \
+ --amend gautada/homebridge:$BUILD_VERSION-arm \
+ --amend gautada/homebridge:$BUILD_VERSION-x86 \
+ gautada/homebridge:$BUILD_VERSION
+
+
+
+
