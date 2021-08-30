@@ -37,7 +37,7 @@ RUN addgroup $USER \
  && echo "$USER:$USER" | chpasswd
 
 RUN chown homebridge:homebridge -R /home/homebridge \
-                                   /etc/homebridge
+ && chmod 777 -R /opt/homebridge-data
 
 USER $USER
 WORKDIR /home/homebridge
