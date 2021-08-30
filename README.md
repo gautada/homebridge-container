@@ -1,8 +1,6 @@
 # Homebridge
 
-*Bringing HomeKit support where there is none*
-
-Homebridge allows you to integrate with smart home devices that do not natively support HomeKit. There are over 2,000 Homebridge plugins supporting thousands of different smart accessories.
+[Homebridge](https://homebridge.io) brings HomeKit support where there is none. Homebridge allows you to integrate with smart home devices that do not natively support HomeKit. There are over 2,000 Homebridge plugins supporting thousands of different smart accessories.
 
 [Container on Docker Hub|image: oznu/homebridge:latest]
 [Homepage|https://homebridge.io]
@@ -76,4 +74,16 @@ Homebridge is deployed via a Kubernetes Deployment.
 - Kubernetes Deployment must include ```hostNetwork: true```
 
 Requires ```--net=host```
+
+## Version
+
+```
+echo "r$(/usr/local/bin/homebridge --version | sed -n '2p')"
+```
+
+## Manual
+
+```
+docker build --build-arg ALPINE_TAG=3.14.1 --tag homebridge:dev -f Containerfile .
+````
 

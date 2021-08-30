@@ -1,3 +1,4 @@
 # Ignore Xcode files
 *.xcodeproj/
-config.json
+.DS_Store
+config.json # Ignore the config file if present because it probably contains secret info.
