@@ -15,7 +15,9 @@ steps:
     OCI_VERSION: v8.1.2
   commands:
   - buildah login --username=$DOCKER_USERNAME --password=$DOCKER_PASSWORD docker.io
-  - buildah bud --build-arg ALPINE_TAG=$ALPINE_TAG --build-arg BRANCH=$OCI_VERSION --tag homebridge:dev -f Containerfile
-  - buildah run --tty homebridge:dev "r$(homebridge --version | sed -n '2p')"
+  - buildah bud --build-arg ALPINE_TAG=$ALPINE_TAG --tag homebridge:dev -f Containerfile
+  - set X="r$(docker run -it --name homebridge --rm homebridge:dev /usr/local/bin/homebridge --version | sed -n '2p')"
+  - echo $X
+  # buildah run --tty homebridge:dev "r$(/usr/local/bin/homebridge --version | sed -n '2p')"
   - buildah push localhost/homebridge:dev docker://docker.io/gautada/homebridge:$OCI_VERSION
 

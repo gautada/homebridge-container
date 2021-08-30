@@ -45,7 +45,6 @@ WORKDIR /home/homebridge
 RUN mkdir /home/homebridge/.homebridge \
  && ln -s /etc/homebridge/conf.json /home/homebridge/.homebridge/config.json
 
-ENTRYPOINT ["/usr/local/bin/homebridge"]
-CMD ["-D", "-Q"]
+CMD ["/usr/local/bin/homebridge", "-D", "-Q"]
 
 
