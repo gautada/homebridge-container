@@ -14,8 +14,9 @@ EXPOSE 8080/tcp
 EXPOSE 51400/tcp
 EXPOSE 5353/udp
 
-RUN apk add --no-cache  --update nodejs npm sudo
+RUN apk add --no-cache  --update nodejs npm nmap sudo
 
+RUN echo "" >> /etc/sudoers
 COPY --from=config-alpine /etc/localtime /etc/localtime
 COPY --from=config-alpine /etc/timezone /etc/timezone
 
