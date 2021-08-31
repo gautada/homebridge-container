@@ -69,7 +69,7 @@ Homebridge is deployed via a Kubernetes Deployment.
 ```
 #### Notes
 
-- [Notes on Docker without Host Network Mode|https://www.devwithimagination.com/2020/02/02/running-homebridge-on-docker-without-host-network-mode/]
+- [Notes on Docker without Host Network Mode](https://www.devwithimagination.com/2020/02/02/running-homebridge-on-docker-without-host-network-mode/)
 - Kubernetes Service maps ports pod:8080 to service:80
 - Kubernetes Deployment must include ```hostNetwork: true```
 

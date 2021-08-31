@@ -13,6 +13,7 @@ FROM alpine:$ALPINE_TAG
 EXPOSE 8080/tcp
 EXPOSE 51400/tcp
 EXPOSE 5353/udp
+EXPOSE 41000/udp
 
 RUN apk add --no-cache  --update nodejs npm nmap sudo
 
