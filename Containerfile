@@ -43,7 +43,7 @@ USER $USER
 WORKDIR /home/homebridge
 
 RUN mkdir /home/homebridge/.homebridge \
- && ln -s /etc/homebridge/conf.json /home/homebridge/.homebridge/config.json
+ && ln -s /opt/homebridge-data/config.json /home/homebridge/.homebridge/config.json
 
 CMD ["/usr/local/bin/homebridge", "-D", "-Q"]
 
