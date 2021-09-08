@@ -1,11 +1,27 @@
 # Homebridge
 
-*Bringing HomeKit support where there is none*
+[Homebridge](https://homebridge.io) brings HomeKit support where there is none. Homebridge allows you to integrate with smart home devices that do not natively support HomeKit. There are over 2,000 Homebridge plugins supporting thousands of different smart accessories.
 
-Homebridge allows you to integrate with smart home devices that do not natively support HomeKit. There are over 2,000 Homebridge plugins supporting thousands of different smart accessories.
+## Container
 
-[Container on Docker Hub|image: oznu/homebridge:latest]
-[Homepage|https://homebridge.io]
+### Versions
+
+Homebridge NodeJS code is just installed using NPM and version is established from the installed/running scripts.
+
+```
+/usr/local/bin/homebridge --version | sed -n 2p
+```
+
+- [September 8, 2021](https://github.com/homebridge/homebridge/tags) - Active version is 1.3.4 as tag [1.3.4](https://github.com/homebridge/homebridge/tags)
+
+### Manual Build
+
+```
+docker build --build-arg ALPINE_TAG=3.14.1 --build-arg VERSION=1.3.4 --tag homebridge:dev -f Containerfile . 
+docker run -i -p 3000:3000 -t --name homebridge --rm homebridge:dev 
+Requires ```--net=host```
+
+```
 
 ## Plugins
 
@@ -24,8 +40,7 @@ The **Ring Video Doorbell** is the company's flagship product; it is a smart doo
 From time-to-time the **refresh tokens** need to be updated via [credential refresh|https://github.com/dgreif/ring/wiki/Refresh-Tokens] using ```ring-auth-cli```.
 
 ```
-ke -n home-iot pod/homebrige-[...pod uid...] -- /bin/sh
-ring-auth-cli
+/usr/local/bin/ring-auth-cli
 ```
 
 ### Nest
@@ -57,10 +72,9 @@ The plug has to be configured on the iOS device and onboarded onto the network. 
 ## Potential Plugins
 
 Eufy Vacuum Cleaner
+eero network
 
-## Container 
-
-Homebridge is deployed via a Kubernetes Deployment.
+## Notes
 
 ```
 | Ports      | Description         | Pod            | Access    |
@@ -69,11 +83,9 @@ Homebridge is deployed via a Kubernetes Deployment.
 | 514000     | Homebridge Port     | 514000         | host      |
 | 5353       | Avahi dns? tcp/udp  | 5353           | host      |
 ```
-#### Notes
 
-- [Notes on Docker without Host Network Mode|https://www.devwithimagination.com/2020/02/02/running-homebridge-on-docker-without-host-network-mode/]
+
+- [Notes on Docker without Host Network Mode](https://www.devwithimagination.com/2020/02/02/running-homebridge-on-docker-without-host-network-mode/)
 - Kubernetes Service maps ports pod:8080 to service:80
 - Kubernetes Deployment must include ```hostNetwork: true```
-
-Requires ```--net=host```
 
