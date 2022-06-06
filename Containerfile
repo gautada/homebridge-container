@@ -1,26 +1,26 @@
-# ------------------------------------------------------------- [STAGE] INIT
-ARG ALPINE_TAG=0.0.0
+ARG ALPINE_VERSION=3.16.0
 
-FROM alpine:$ALPINE_TAG as config-alpine
+# ╭――――――――――――――――---------------------------------------------------------――╮
+# │                                                                           │
+# │ STAGE 1: homebridge-container                                                 │
+# │                                                                           │
+# ╰―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――╯
+FROM gautada/alpine:$ALPINE_VERSION
 
-RUN apk add --no-cache tzdata
-
-RUN cp -v /usr/share/zoneinfo/America/New_York /etc/localtime
-RUN echo "America/New_York" > /etc/timezone
-
-FROM alpine:$ALPINE_TAG
+# ╭――――――――――――――――――――╮
+# │ METADATA           │
+# ╰――――――――――――――――――――╯
+LABEL version="2022-06-06"
+LABEL source="https://github.com/gautada/homebridge-container.git"
+LABEL maintainer="Adam Gautier <adam@gautier.org>"
+LABEL description="A basic homebridge for homekit integration."
 
 EXPOSE 8080/tcp
 EXPOSE 51400/tcp
 EXPOSE 5353/udp
 EXPOSE 41000/udp
 
-RUN apk add --no-cache  --update nodejs npm nmap sudo
-
-RUN echo "homebridge ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
-
-COPY --from=config-alpine /etc/localtime /etc/localtime
-COPY --from=config-alpine /etc/timezone /etc/timezone
+RUN apk add --no-cache  --update nodejs npm
 
 COPY config.json /opt/homebridge-data/config.json
 # /home/homebridge/.homebridge/config.json
