@@ -22,7 +22,7 @@ steps:
     DOCKERIO_PASSWORD:
       from_secret: password.docker.io
   commands:
-   - podman tag homebridge:build docker.io/gautada/coredns:$HOMEBRIDGE_VERSION
+   - podman tag homebridge:build docker.io/gautada/homebridge:$HOMEBRIDGE_VERSION
    - podman login --username=$DOCKERIO_USERNAME --password=$DOCKERIO_PASSWORD docker.io
    - podman push docker.io/gautada/homebridge:$HOMEBRIDGE_VERSION
   

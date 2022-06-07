@@ -2,6 +2,8 @@
 
 [Homebridge](https://homebridge.io) brings HomeKit support where there is none. Homebridge allows you to integrate with smart home devices that do not natively support HomeKit. There are over 2,000 Homebridge plugins supporting thousands of different smart accessories.
 
+UI: https://github.com/oznu/homebridge-config-ui-x/wiki/Config-Options
+
 ## Container
 
 ### Versions
