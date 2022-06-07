@@ -30,13 +30,15 @@ ARG HOMEBRIDGE_VERSION=1.4.1
 RUN apk add --no-cache nodejs npm python3 build-base
 RUN mkdir -p /etc/homebridge \
  && ln -s /opt/homebridge/config.json /etc/homebridge/config.json
+ 
 #COPY config.json /opt/homebridge-data/config.json
 # /home/homebridge/.homebridge/config.json
-RUN npm install -g --unsafe-perm debug@4.3.1 homebridge@$HOMEBRIDGE_VERSION homebridge-config-ui-x
-RUN npm install -g --unsafe-perm homebridge-ring homebridge-nest homebridge-rainbird homebridge-tplink-smarthome
- RUN npm install -g --unsafe-perm homebridge-broadlink-rm
+
+#
+
 # RUN hb-service update-node
 # homebridge-eufy-robovac
+COPY 10-ep-container.sh /etc/entrypoint.d/10-ep-container.sh
 
 # ╭――――――――――――――――――――╮
 # │ USER               │
@@ -49,9 +51,24 @@ RUN /bin/mkdir -p /opt/$USER \
  && /usr/sbin/usermod -aG wheel $USER \
  && /bin/echo "$USER:$USER" | chpasswd \
  && /bin/chown $USER:$USER -R /opt/$USER
+#  && mv /root/.npm /home/$USER/.npm \
+#  && /bin/chown $USER:$USER -R /home/$USER/.npm \
+#  && mv /usr/local/lib/node_modules/homebridge-platform-helper /usr/local/lib/node_modules/homebridge-platform-helper~ \
+#  && ln -s /home/$USER/.npm/_cache /usr/local/lib/node_modules/homebridge-platform-helper
+ 
  
 USER $USER
 WORKDIR /home/$USER
+
+# ╭――――――――――――――――――――╮
+# │ APPLICATION(USER)  │
+# ╰――――――――――――――――――――╯
+# RUN npm install --unsafe-perm debug@4.3.1 homebridge@$HOMEBRIDGE_VERSION homebridge-config-ui-x
+# RUN npm install uuid@latest
+RUN npm install homebridge@$HOMEBRIDGE_VERSION homebridge-config-ui-x
+RUN npm install homebridge-ring homebridge-nest homebridge-rainbird homebridge-tplink-smarthome
+RUN npm install hap-nodejs homebridge-broadlink-rm
+# RUN npm audit fix --force
 
 # ARG USER=homebridge
 # RUN addgroup $USER \

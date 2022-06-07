@@ -16,6 +16,10 @@ Homebridge NodeJS code is just installed using NPM and version is established fr
 
 ### Manual Build
 
+docker build --build-arg ALPINE_VERSION=3.16.0 --build-arg HOMEBRIDGE_VERSION=1.4.1 --file Containerfile --label revision="$(git rev-parse HEAD)" --label version="$(date +%Y.%m.%d)" --no-cache --tag homebridge:build .
+
+docker run --interactive --name homebridge --publish 8080:8080 --publish 51400:51400 --publish 5354:5353/udp --publish 41000:41000/udp --rm --tty --volume ~/Workspace/homebridge/homebridge-container:/opt/homebridge homebridge:build
+
 ```
 docker build --build-arg ALPINE_TAG=3.14.1 --build-arg VERSION=1.3.4 --tag homebridge:dev -f Containerfile . 
 docker run -i -p 3000:3000 -t --name homebridge --rm homebridge:dev 
