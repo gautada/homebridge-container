@@ -8,8 +8,12 @@ echo "---------- [ HOMEKIT HUB(homebridge) ] ----------"
 if [ -z "$ENTRYPOINT_PARAMS" ] ; then
  TEST="$(/usr/bin/pgrep /usr/bin/coredns)"
  if [ $? -eq 1 ] ; then
+  # cd /etc/avahi/services
+  # sudo /usr/sbin/homebridge-service-generator
+  # sudo /usr/bin/dbus-daemon --config-file /usr/share/dbus-1/system.conf
+  # sudo /usr/sbin/avahi-daemon --daemonize
   # /usr/local/bin/homebridge --debug --no-qrcode --user-storage-path /opt/homebridge
-  /home/homebridge/node_modules/homebridge/bin/homebridge --debug --no-qrcode --user-storage-path /opt/homebridge
+  /usr/sbin/homebridge-bridge --debug --no-qrcode --user-storage-path /opt/homebridge
   # TEST="$(/usr/bin/pgrep /usr/sbin/crond)"
   # if [ $? -eq 0 ] ; then
   #  # Kill the background cron service

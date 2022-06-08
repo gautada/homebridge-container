@@ -4,6 +4,18 @@
 
 UI: https://github.com/oznu/homebridge-config-ui-x/wiki/Config-Options
 
+
+            "log": {
+            #     "tail": "journalctl -o cat -n 100 -f -u homebridge"
+            }
+                        "log": { "method": "file", "path": "/Users/username/.homebridge/homebridge.log"},
+
+EXPOSE 8080/tcp # UI
+EXPOSE 51400/tcp # Homebridge port
+EXPOSE 5353/udp # Multicast DNS mDNS
+EXPOSE 41000/udp
+
+            
 ## Container
 
 ### Versions

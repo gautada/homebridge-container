@@ -1,0 +1,72 @@
+#!/bin/ash
+
+function create_service_file {
+
+  local name=$1
+  local accessory_category=$2
+  local mac_address=$3
+  local port=$4
+  local setup_id=$5
+
+     # Write the service configurtion file to the current directory
+cat <<EOF > "${name}.service"
+<service-group>
+  <name>$name</name>
+  <service>
+    <type>_hap._tcp</type>
+    <port>$port</port>
+
+    <!-- friendly name -->
+    <txt-record>md=$name</txt-record>
+
+    <!-- HAP version -->
+    <txt-record>pv=1.0</txt-record>
+    <!-- MAC -->
+    <txt-record>id=${mac_address}</txt-record>
+    <!-- Current configuration number -->
+    <txt-record>c#=2</txt-record>
+
+    <!-- accessory category -->
+    <txt-record>ci=${accessory_category}</txt-record>
+
+    <!-- accessory state
+          This must have a value of 1 -->
+    <txt-record>s#=1</txt-record>
+    <!-- Pairing Feature Flags
+         nothing to configure -->
+    <txt-record>ff=0</txt-record>
+    <!-- Status flags
+         0=not paired, 1=paired -->
+    <txt-record>sf=1</txt-record>
+    <!-- setup hash (used for pairing).
+         Required to support enhanced
+         setup payload information (but
+         not defined in the spec)        -->
+    <txt-record>sh=$(echo -n ${setup_id}${mac_address} | openssl dgst -binary -sha512 | head -c 4 | base64)</txt-record>
+  </service>
+</service-group>
+EOF
+
+  # Move it in to place
+  # mv -i "${name}.service" "/etc/avahi/services/${name// /}.service"
+  cat "${name}.service"
+  # Helper Message
+  echo "Please ensure you have exposed port $port"
+
+}
+
+CONFIG=$(cat /opt/homebridge/config.json)
+NAME=$(echo "$CONFIG" | jq -r .bridge.name)
+MAC=$(echo "$CONFIG" | jq -r .bridge.username)
+PORT=$(echo "$CONFIG" | jq -r .bridge.port)
+
+echo "$NAME $MAC $PORT"
+
+ACCESSORY_CONFIG=$(cat /opt/homebridge/persist/AccessoryInfo.${MAC//:/}.json)
+SETUPID=$(echo "$ACCESSORY_CONFIG" | jq -r .setupID)
+CATEGORY=$(echo "$ACCESSORY_CONFIG" | jq -r .category)
+
+echo "$SETUPID $CATEGORY"
+
+create_service_file "$NAME" $CATEGORY "$MAC" "$PORT" "$SETUPID"
+

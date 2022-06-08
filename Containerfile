@@ -21,24 +21,35 @@ LABEL description="A basic homebridge for homekit integration."
 EXPOSE 8080/tcp
 EXPOSE 51400/tcp
 EXPOSE 5353/udp
-EXPOSE 41000/udp
+# EXPOSE 41000/udp
+
+# ╭――――――――――――――――――――╮
+# │ SUDO               │
+# ╰――――――――――――――――――――╯
+COPY wheel-avahi /etc/sudoers.d/wheel-avahi
+COPY wheel-dbus /etc/sudoers.d/wheel-dbus
+COPY wheel-nmap /etc/sudoers.d/wheel-nmap
+COPY wheel-homebridge-service /etc/sudoers.d/wheel-homebridge-service
 
 # ╭――――――――――――――――――――╮
 # │ APPLICATION        │
 # ╰――――――――――――――――――――╯
 ARG HOMEBRIDGE_VERSION=1.4.1
-RUN apk add --no-cache nodejs npm python3 build-base
-RUN mkdir -p /etc/homebridge \
- && ln -s /opt/homebridge/config.json /etc/homebridge/config.json
- 
+RUN apk add --no-cache avahi-compat-libdns_sd avahi-dev dbus nodejs npm python3 build-base
+COPY homebridge-service-generator /usr/sbin/homebridge-service-generator
+RUN ln -s /home/homebridge/node_modules/homebridge/bin/homebridge /usr/sbin/homebridge-bridge \
+ && ln -s /home/homebridge/node_modules/homebridge-config-ui-x/dist/bin/standalone.js /usr/sbin/homebridge-ui
+COPY 10-ep-container.sh /etc/entrypoint.d/10-ep-container.sh
+
+
+# RUN apk add --no-cache avahi avahi-compat-libdns_sd avahi-dev dbus jq nodejs npm openssl python3 build-base
+# RUN mkdir -p /etc/homebridge \
+#  && ln -s /opt/homebridge/config.json /etc/homebridge/config.json
 #COPY config.json /opt/homebridge-data/config.json
 # /home/homebridge/.homebridge/config.json
-
-#
-
 # RUN hb-service update-node
 # homebridge-eufy-robovac
-COPY 10-ep-container.sh /etc/entrypoint.d/10-ep-container.sh
+
 
 # ╭――――――――――――――――――――╮
 # │ USER               │
@@ -63,11 +74,11 @@ WORKDIR /home/$USER
 # ╭――――――――――――――――――――╮
 # │ APPLICATION(USER)  │
 # ╰――――――――――――――――――――╯
-# RUN npm install --unsafe-perm debug@4.3.1 homebridge@$HOMEBRIDGE_VERSION homebridge-config-ui-x
+# RUN npm install --unsafe-perm --verbose debug@4.3.1 homebridge@$HOMEBRIDGE_VERSION homebridge-config-ui-x
 # RUN npm install uuid@latest
-RUN npm install homebridge@$HOMEBRIDGE_VERSION homebridge-config-ui-x
-RUN npm install homebridge-ring homebridge-nest homebridge-rainbird homebridge-tplink-smarthome
-RUN npm install hap-nodejs homebridge-broadlink-rm
+RUN npm install --unsafe-perm --verbose homebridge@$HOMEBRIDGE_VERSION homebridge-config-ui-x
+RUN npm install --unsafe-perm --verbose homebridge-ring homebridge-nest homebridge-rainbird homebridge-tplink-smarthome
+RUN npm install --unsafe-perm --verbose hap-nodejs homebridge-broadlink-rm
 # RUN npm audit fix --force
 
 # ARG USER=homebridge
