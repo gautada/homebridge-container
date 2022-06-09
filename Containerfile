@@ -77,27 +77,3 @@ RUN /bin/mkdir -p /opt/$USER \
 USER $USER
 WORKDIR /home/$USER
 
-# ╭――――――――――――――――――――╮
-# │ APPLICATION(USER)  │
-# ╰――――――――――――――――――――╯
-# RUN npm install --unsafe-perm --verbose debug@4.3.1 homebridge@$HOMEBRIDGE_VERSION homebridge-config-ui-x
-# RUN npm install uuid@latest
-# RUN npm audit fix --force
-
-# ARG USER=homebridge
-# RUN addgroup $USER \
-#  && adduser -D -s /bin/sh -G $USER $USER \
-#  && echo "$USER:$USER" | chpasswd
-#
-# RUN chown homebridge:homebridge -R /home/homebridge \
-#  && chmod 777 -R /opt/homebridge-data
-#
-# USER $USER
-# WORKDIR /home/homebridge
-#
-# RUN mkdir /home/homebridge/.homebridge \
-#  && ln -s /opt/homebridge-data/config.json /home/homebridge/.homebridge/config.json
-#
-# CMD ["/usr/local/bin/homebridge", "-D", "-Q"]
-
-
