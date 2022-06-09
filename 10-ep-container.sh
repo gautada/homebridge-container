@@ -13,6 +13,7 @@ if [ -z "$ENTRYPOINT_PARAMS" ] ; then
   # sudo /usr/bin/dbus-daemon --config-file /usr/share/dbus-1/system.conf
   # sudo /usr/sbin/avahi-daemon --daemonize
   # /usr/local/bin/homebridge --debug --no-qrcode --user-storage-path /opt/homebridge
+  # /usr/local/lib/node_modules/homebridge/bin/homebridge --debug --no-qrcode --user-storage-path /opt/homebridge
   /usr/sbin/homebridge-bridge --debug --no-qrcode --user-storage-path /opt/homebridge
   # TEST="$(/usr/bin/pgrep /usr/sbin/crond)"
   # if [ $? -eq 0 ] ; then

@@ -35,10 +35,16 @@ COPY wheel-homebridge-service /etc/sudoers.d/wheel-homebridge-service
 # │ APPLICATION        │
 # ╰――――――――――――――――――――╯
 ARG HOMEBRIDGE_VERSION=1.4.1
-RUN apk add --no-cache avahi-compat-libdns_sd avahi-dev dbus nodejs npm python3 build-base
+# Packages that were remove for minimal install "avahi-compat-libdns_sd avahi-dev dbus"
+# Maybe run avahi as a separate container/pod
+RUN apk add --no-cache nodejs npm python3 build-base
+RUN npm install -g --unsafe-perm --verbose homebridge@$HOMEBRIDGE_VERSION homebridge-config-ui-x
+RUN npm install -g --unsafe-perm --verbose homebridge-ring homebridge-nest homebridge-rainbird homebridge-tplink-smarthome
+RUN npm install -g --unsafe-perm --verbose hap-nodejs homebridge-broadlink-rm
+
 COPY homebridge-service-generator /usr/sbin/homebridge-service-generator
-RUN ln -s /home/homebridge/node_modules/homebridge/bin/homebridge /usr/sbin/homebridge-bridge \
- && ln -s /home/homebridge/node_modules/homebridge-config-ui-x/dist/bin/standalone.js /usr/sbin/homebridge-ui
+RUN ln -s /usr/local/lib/node_modules/homebridge/bin/homebridge /usr/sbin/homebridge-bridge \
+ && ln -s /usr/local/lib/node_modules/homebridge-config-ui-x/dist/bin/standalone.js /usr/sbin/homebridge-ui
 COPY 10-ep-container.sh /etc/entrypoint.d/10-ep-container.sh
 
 
@@ -76,9 +82,6 @@ WORKDIR /home/$USER
 # ╰――――――――――――――――――――╯
 # RUN npm install --unsafe-perm --verbose debug@4.3.1 homebridge@$HOMEBRIDGE_VERSION homebridge-config-ui-x
 # RUN npm install uuid@latest
-RUN npm install --unsafe-perm --verbose homebridge@$HOMEBRIDGE_VERSION homebridge-config-ui-x
-RUN npm install --unsafe-perm --verbose homebridge-ring homebridge-nest homebridge-rainbird homebridge-tplink-smarthome
-RUN npm install --unsafe-perm --verbose hap-nodejs homebridge-broadlink-rm
 # RUN npm audit fix --force
 
 # ARG USER=homebridge
