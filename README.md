@@ -3,7 +3,7 @@
 [Homebridge](https://homebridge.io) brings HomeKit support where there is none. Homebridge allows you to integrate with smart home devices that do not natively support HomeKit. There are over 2,000 Homebridge plugins supporting thousands of different smart accessories.
 
 UI: https://github.com/oznu/homebridge-config-ui-x/wiki/Config-Options
-
+https://www.devwithimagination.com/2020/02/02/running-homebridge-on-docker-without-host-network-mode/
 
             "log": {
             #     "tail": "journalctl -o cat -n 100 -f -u homebridge"
@@ -15,6 +15,8 @@ EXPOSE 51400/tcp # Homebridge port
 EXPOSE 5353/udp # Multicast DNS mDNS
 EXPOSE 41000/udp
 
+         "showRequestResponse": true
+         "logging": "debug"
             
 ## Container
 

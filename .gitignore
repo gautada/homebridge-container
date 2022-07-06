@@ -10,3 +10,6 @@
 
 # .dockerignore can simply be a symlink -- need to lookup podman ignore
 .dockerignore
+
+manifest/
+

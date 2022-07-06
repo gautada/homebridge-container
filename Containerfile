@@ -37,7 +37,7 @@ COPY wheel-homebridge-service /etc/sudoers.d/wheel-homebridge-service
 ARG HOMEBRIDGE_VERSION=1.4.1
 # Packages that were remove for minimal install "avahi-compat-libdns_sd avahi-dev dbus"
 # Maybe run avahi as a separate container/pod
-RUN apk add --no-cache nodejs npm python3 build-base
+RUN apk add --no-cache nodejs npm nmap python3 build-base
 RUN npm install -g --unsafe-perm --verbose homebridge@$HOMEBRIDGE_VERSION homebridge-config-ui-x
 RUN npm install -g --unsafe-perm --verbose homebridge-ring homebridge-nest homebridge-rainbird homebridge-tplink-smarthome
 RUN npm install -g --unsafe-perm --verbose hap-nodejs homebridge-broadlink-rm
