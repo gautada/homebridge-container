@@ -24,6 +24,11 @@ EXPOSE 5353/udp
 # EXPOSE 41000/udp
 
 # ╭――――――――――――――――――――╮
+# │ CONFIG             │
+# ╰――――――――――――――――――――╯
+RUN ln -s /etc/container/configmap.d /etc/homebridge
+
+# ╭――――――――――――――――――――╮
 # │ SUDO               │
 # ╰――――――――――――――――――――╯
 COPY wheel-avahi /etc/sudoers.d/wheel-avahi
