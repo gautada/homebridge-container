@@ -9,7 +9,7 @@ platform:
 steps:
 - name: build
   environment:
-    ALPINE_VERSION: 3.15.4
+    ALPINE_VERSION: 3.16.0
     HOMEBRIDGE_VERSION: 1.4.1
   commands:
   - podman build --build-arg ALPINE_VERSION=$ALPINE_VERSION --build-arg HOMEBRIDGE_VERSION=$HOMEBRIDGE_VERSION --format docker --file Containerfile --label revision="$(git rev-parse HEAD)" --label version="$(date +%Y.%m.%d)" --no-cache --tag homebridge:build .
