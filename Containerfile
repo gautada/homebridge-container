@@ -37,6 +37,22 @@ COPY wheel-nmap /etc/sudoers.d/wheel-nmap
 COPY wheel-homebridge-service /etc/sudoers.d/wheel-homebridge-service
 
 # ╭――――――――――――――――――――╮
+# │ USER               │
+# ╰――――――――――――――――――――╯
+ARG USER=homebridge
+# VOLUME /opt/$USER
+RUN /bin/mkdir -p /opt/$USER \
+ && /usr/sbin/addgroup $USER \
+ && /usr/sbin/adduser -D -s /bin/ash -G $USER $USER \
+ && /usr/sbin/usermod -aG wheel $USER \
+ && /bin/echo "$USER:$USER" | chpasswd \
+ && /bin/chown $USER:$USER -R /opt/$USER
+#  && mv /root/.npm /home/$USER/.npm \
+#  && /bin/chown $USER:$USER -R /home/$USER/.npm \
+#  && mv /usr/local/lib/node_modules/homebridge-platform-helper /usr/local/lib/node_modules/homebridge-platform-helper~ \
+#  && ln -s /home/$USER/.npm/_cache /usr/local/lib/node_modules/homebridge-platform-helper
+
+# ╭――――――――――――――――――――╮
 # │ APPLICATION        │
 # ╰――――――――――――――――――――╯
 ARG HOMEBRIDGE_VERSION=1.4.1
@@ -63,24 +79,6 @@ RUN /bin/mkdir -p /opt/$USER \
 # RUN hb-service update-node
 # homebridge-eufy-robovac
 
-
-# ╭――――――――――――――――――――╮
-# │ USER               │
-# ╰――――――――――――――――――――╯
-ARG USER=homebridge
-# VOLUME /opt/$USER
-RUN /bin/mkdir -p /opt/$USER \
- && /usr/sbin/addgroup $USER \
- && /usr/sbin/adduser -D -s /bin/ash -G $USER $USER \
- && /usr/sbin/usermod -aG wheel $USER \
- && /bin/echo "$USER:$USER" | chpasswd \
- && /bin/chown $USER:$USER -R /opt/$USER
-#  && mv /root/.npm /home/$USER/.npm \
-#  && /bin/chown $USER:$USER -R /home/$USER/.npm \
-#  && mv /usr/local/lib/node_modules/homebridge-platform-helper /usr/local/lib/node_modules/homebridge-platform-helper~ \
-#  && ln -s /home/$USER/.npm/_cache /usr/local/lib/node_modules/homebridge-platform-helper
- 
- 
 USER $USER
 WORKDIR /home/$USER
 
