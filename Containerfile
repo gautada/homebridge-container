@@ -52,6 +52,8 @@ RUN ln -s /usr/local/lib/node_modules/homebridge/bin/homebridge /usr/sbin/homebr
  && ln -s /usr/local/lib/node_modules/homebridge-config-ui-x/dist/bin/standalone.js /usr/sbin/homebridge-ui
 COPY 10-ep-container.sh /etc/container/entrypoint.d/10-ep-container.sh
 
+RUN /bin/mkdir -p /opt/$USER \
+ && /bin/chown -R $USER:$USER /opt/$USER /var/backup /tmp/backup /opt/backup
 
 # RUN apk add --no-cache avahi avahi-compat-libdns_sd avahi-dev dbus jq nodejs npm openssl python3 build-base
 # RUN mkdir -p /etc/homebridge \
