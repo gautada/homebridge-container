@@ -50,7 +50,7 @@ RUN npm install -g --unsafe-perm --verbose homebridge-ring homebridge-nest homeb
 COPY homebridge-service-generator /usr/sbin/homebridge-service-generator
 RUN ln -s /usr/local/lib/node_modules/homebridge/bin/homebridge /usr/sbin/homebridge-bridge \
  && ln -s /usr/local/lib/node_modules/homebridge-config-ui-x/dist/bin/standalone.js /usr/sbin/homebridge-ui
-COPY 10-ep-container.sh /etc/entrypoint.d/10-ep-container.sh
+COPY 10-ep-container.sh /etc/container/entrypoint.d/10-ep-container.sh
 
 
 # RUN apk add --no-cache avahi avahi-compat-libdns_sd avahi-dev dbus jq nodejs npm openssl python3 build-base
