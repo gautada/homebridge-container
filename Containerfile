@@ -29,6 +29,11 @@ EXPOSE 5353/udp
 RUN ln -s /etc/container/configmap.d /etc/homebridge
 
 # ╭――――――――――――――――――――╮
+# │ BACKUP             │
+# ╰――――――――――――――――――――╯
+COPY backup.fnc /etc/container/backup.d/backup.fnc
+
+# ╭――――――――――――――――――――╮
 # │ SUDO               │
 # ╰――――――――――――――――――――╯
 COPY wheel-avahi /etc/sudoers.d/wheel-avahi
