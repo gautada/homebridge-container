@@ -66,7 +66,8 @@ ARG HOMEBRIDGE_VERSION=1.4.1
 RUN apk add --no-cache nodejs npm nmap python3 build-base
 RUN npm install -g --unsafe-perm --verbose homebridge@$HOMEBRIDGE_VERSION homebridge-config-ui-x
 RUN npm install -g --unsafe-perm --verbose homebridge-ring homebridge-nest homebridge-rainbird homebridge-tplink-smarthome
-# RUN npm install -g --unsafe-perm --verbose hap-nodejs homebridge-broadlink-rm
+# hap-nodejs
+RUN npm install -g --unsafe-perm --verbose homebridge-broadlink-rm-pro
 
 COPY homebridge-service-generator /usr/sbin/homebridge-service-generator
 RUN ln -s /usr/local/lib/node_modules/homebridge/bin/homebridge /usr/sbin/homebridge-bridge \
