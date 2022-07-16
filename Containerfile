@@ -64,10 +64,11 @@ ARG HOMEBRIDGE_VERSION=1.4.1
 # Packages that were remove for minimal install "avahi-compat-libdns_sd avahi-dev dbus"
 # Maybe run avahi as a separate container/pod
 RUN apk add --no-cache nodejs npm nmap python3 build-base
-RUN npm install -g --unsafe-perm --verbose homebridge@$HOMEBRIDGE_VERSION homebridge-config-ui-x
-RUN npm install -g --unsafe-perm --verbose homebridge-ring homebridge-nest homebridge-rainbird homebridge-tplink-smarthome
+RUN npm install --global --unsafe-perm --verbose homebridge@$HOMEBRIDGE_VERSION homebridge-config-ui-x
+RUN npm install --global --unsafe-perm --verbose homebridge-ring homebridge-nest homebridge-rainbird homebridge-tplink-smarthome
 # hap-nodejs
-RUN npm install -g --unsafe-perm --verbose homebridge-broadlink-rm-pro
+# https://broadlink.kiwicam.nz/#window-covering
+RUN npm install --global --unsafe-perm --verbose homebridge-broadlink-rm-pro
 
 COPY homebridge-service-generator /usr/sbin/homebridge-service-generator
 RUN ln -s /usr/local/lib/node_modules/homebridge/bin/homebridge /usr/sbin/homebridge-bridge \
