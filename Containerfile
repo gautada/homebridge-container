@@ -52,7 +52,7 @@ COPY backup.fnc /etc/container/backup.d/backup.fnc
 # ╭――――――――――――――――――――╮
 # │ SUDO               │
 # ╰――――――――――――――――――――╯
-COPY wheel-avahi /etc/sudoers.d/wheel-avahi
+COPY wheel- /etc/sudoers.d/wheel-avahi
 COPY wheel-dbus /etc/sudoers.d/wheel-dbus
 COPY wheel-homebridge-service /etc/sudoers.d/wheel-homebridge-service
 
