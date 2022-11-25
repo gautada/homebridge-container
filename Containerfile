@@ -42,19 +42,18 @@ RUN ln -s /etc/container/configmap.d /etc/homebridge
 # ╭――――――――――――――――――――╮
 # │ ENTRYPOINT         │
 # ╰――――――――――――――――――――╯
-COPY 10-ep-container.sh /etc/container/entrypoint.d/10-ep-container.sh
+RUN rm -v /etc/container/entrypoint
+COPY entrypoint /etc/container/entrypoint
 
 # ╭――――――――――――――――――――╮
 # │ BACKUP             │
 # ╰――――――――――――――――――――╯
-COPY backup.fnc /etc/container/backup.d/backup.fnc
+COPY backup /etc/container/backup
 
 # ╭――――――――――――――――――――╮
 # │ SUDO               │
 # ╰――――――――――――――――――――╯
-COPY wheel- /etc/sudoers.d/wheel-avahi
-COPY wheel-dbus /etc/sudoers.d/wheel-dbus
-COPY wheel-homebridge-service /etc/sudoers.d/wheel-homebridge-service
+COPY wheel  /etc/container/wheel
 
 # ╭――――――――――――――――――――╮
 # │ APPLICATION        │
@@ -69,11 +68,11 @@ RUN npm install --global --unsafe-perm --verbose homebridge-ring homebridge-nest
 RUN npm install --global --unsafe-perm --verbose homebridge-broadlink-rm-pro
 
 COPY homebridge-service-generator /usr/sbin/homebridge-service-generator
-RUN ln -s /usr/local/lib/node_modules/homebridge/bin/homebridge /usr/sbin/homebridge-bridge \
- && ln -s /usr/local/lib/node_modules/homebridge-config-ui-x/dist/bin/standalone.js /usr/sbin/homebridge-ui
+RUN ln -s /usr/local/lib/node_modules/homebridge/bin/homebridge /usr/sbin/homebridge-bridge
+RUN ln -s /usr/local/lib/node_modules/homebridge-config-ui-x/dist/bin/standalone.js /usr/sbin/homebridge-ui
 
-RUN /bin/mkdir -p /opt/$USER \
- && /bin/chown -R $USER:$USER /opt/$USER /var/backup /tmp/backup /opt/backup
+RUN /bin/mkdir -p /opt/$USER
+RUN /bin/chown -R $USER:$USER /opt/$USER /var/backup /tmp/backup /mnt/volumes/backup
 
 USER $USER
 WORKDIR /home/$USER
