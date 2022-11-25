@@ -29,3 +29,7 @@ steps:
    - podman push docker.io/$DOCKERIO_USERNAME/$CONTAINER_NAME:$CONTAINER_VERSION
    - podman push docker.io/$DOCKERIO_USERNAME/$CONTAINER_NAME:latest
   
+
+trigger:
+  branch:
+  - main
