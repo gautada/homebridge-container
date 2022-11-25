@@ -1,23 +1,25 @@
 {
     "bridge": {
         "name": "homebridge",
-        "username": "00:00:00:00:00:00",
+        "username": "0E:00:EC:60:72:CB",
         "port": 51400,
-        "pin": "123-45-678"
+        "pin": "372-47-220"
     },
     "accessories": [],
     "platforms": [
         {
-            "name": "Config",
+            "name": "config-x",
+            "host": "0.0.0.0",
             "port": 8080,
+            "debug": false,
             "auth": "none",
             "theme": "auto",
             "tempUnits": "c",
             "lang": "en",
             "platform": "config",
-            "log": {
-                "tail": "journalctl -o cat -n 100 -f -u homebridge"
-            }
+            "standalone": true
+            
         }
     ]
 }
+

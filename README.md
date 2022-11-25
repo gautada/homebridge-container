@@ -2,6 +2,22 @@
 
 [Homebridge](https://homebridge.io) brings HomeKit support where there is none. Homebridge allows you to integrate with smart home devices that do not natively support HomeKit. There are over 2,000 Homebridge plugins supporting thousands of different smart accessories.
 
+UI: https://github.com/oznu/homebridge-config-ui-x/wiki/Config-Options
+https://www.devwithimagination.com/2020/02/02/running-homebridge-on-docker-without-host-network-mode/
+
+            "log": {
+            #     "tail": "journalctl -o cat -n 100 -f -u homebridge"
+            }
+                        "log": { "method": "file", "path": "/Users/username/.homebridge/homebridge.log"},
+
+EXPOSE 8080/tcp # UI
+EXPOSE 51400/tcp # Homebridge port
+EXPOSE 5353/udp # Multicast DNS mDNS
+EXPOSE 41000/udp
+
+         "showRequestResponse": true
+         "logging": "debug"
+            
 ## Container
 
 ### Versions
@@ -15,6 +31,10 @@ Homebridge NodeJS code is just installed using NPM and version is established fr
 - [September 8, 2021](https://github.com/homebridge/homebridge/tags) - Active version is 1.3.4 as tag [1.3.4](https://github.com/homebridge/homebridge/tags)
 
 ### Manual Build
+
+docker build --build-arg ALPINE_VERSION=3.16.0 --build-arg HOMEBRIDGE_VERSION=1.4.1 --file Containerfile --label revision="$(git rev-parse HEAD)" --label version="$(date +%Y.%m.%d)" --no-cache --tag homebridge:build .
+
+docker run --interactive --name homebridge --publish 8080:8080 --publish 51400:51400 --publish 5354:5353/udp --publish 41000:41000/udp --rm --tty --volume ~/Workspace/homebridge/homebridge-container:/opt/homebridge homebridge:build
 
 ```
 docker build --build-arg ALPINE_TAG=3.14.1 --build-arg VERSION=1.3.4 --tag homebridge:dev -f Containerfile . 

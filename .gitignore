@@ -1,4 +1,14 @@
-# Ignore Xcode files
+# Ignore Xcode files - Project organization should be backed up with
+# normal time machine/filesystem backup.
 *.xcodeproj/
+
+# Ignore Mac OS X folder information file - This should not be needed in SCM
 .DS_Store
-config.json # Ignore the config file if present because it probably contains secret info.
+
+# Ignore and container runtime folders
+**-container/
+
+manifest/
+
+# .dockerignore can simply be a symlink
+.dockerignore

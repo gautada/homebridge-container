@@ -1,53 +1,79 @@
-# ------------------------------------------------------------- [STAGE] INIT
-ARG ALPINE_TAG=0.0.0
+ARG ALPINE_VERSION=3.16.0
 
-FROM alpine:$ALPINE_TAG as config-alpine
+# ╭――――――――――――――――---------------------------------------------------------――╮
+# │                                                                           │
+# │ STAGE 1: homebridge-container                                             │
+# │                                                                           │
+# ╰―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――╯
+FROM gautada/alpine:$ALPINE_VERSION
 
-RUN apk add --no-cache tzdata
+# ╭――――――――――――――――――――╮
+# │ METADATA           │
+# ╰――――――――――――――――――――╯
+LABEL version="2022-06-06"
+LABEL source="https://github.com/gautada/homebridge-container.git"
+LABEL maintainer="Adam Gautier <adam@gautier.org>"
+LABEL description="A basic homebridge for homekit integration."
 
-RUN cp -v /usr/share/zoneinfo/America/New_York /etc/localtime
-RUN echo "America/New_York" > /etc/timezone
-
-FROM alpine:$ALPINE_TAG
-
+# ╭――――――――――――――――――――╮
+# │ USER               │
+# ╰――――――――――――――――――――╯
+ARG UID=1001
+ARG GID=1001
+ARG USER=homebridge
+RUN /usr/sbin/addgroup -g $GID $USER \
+ && /usr/sbin/adduser -D -G $USER -s /bin/ash -u $UID $USER \
+ && /usr/sbin/usermod -aG wheel $USER \
+ && /bin/echo "$USER:$USER" | chpasswd
+ 
+# ╭――――――――――――――――――――╮
+# │ PORTS              │
+# ╰――――――――――――――――――――╯
 EXPOSE 8080/tcp
 EXPOSE 51400/tcp
 EXPOSE 5353/udp
-EXPOSE 41000/udp
+# EXPOSE 41000/udp
 
-RUN apk add --no-cache  --update nodejs npm nmap sudo
+# ╭――――――――――――――――――――╮
+# │ CONFIG             │
+# ╰――――――――――――――――――――╯
+RUN ln -s /etc/container/configmap.d /etc/homebridge
 
-RUN echo "homebridge ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+# ╭――――――――――――――――――――╮
+# │ ENTRYPOINT         │
+# ╰――――――――――――――――――――╯
+RUN rm -v /etc/container/entrypoint
+COPY entrypoint /etc/container/entrypoint
 
-COPY --from=config-alpine /etc/localtime /etc/localtime
-COPY --from=config-alpine /etc/timezone /etc/timezone
+# ╭――――――――――――――――――――╮
+# │ BACKUP             │
+# ╰――――――――――――――――――――╯
+COPY backup /etc/container/backup
 
-COPY config.json /opt/homebridge-data/config.json
-# /home/homebridge/.homebridge/config.json
+# ╭――――――――――――――――――――╮
+# │ SUDO               │
+# ╰――――――――――――――――――――╯
+COPY wheel  /etc/container/wheel
 
-RUN npm install -g --unsafe-perm debug@4.3.1 homebridge homebridge-config-ui-x
+# ╭――――――――――――――――――――╮
+# │ APPLICATION        │
+# ╰――――――――――――――――――――╯
+ARG HOMEBRIDGE_VERSION=1.4.1
+# Packages that were remove for minimal install "avahi-compat-libdns_sd avahi-dev dbus"
+# Maybe run avahi as a separate container/pod
+RUN apk add --no-cache nodejs npm nmap python3 build-base
+RUN npm install --global --unsafe-perm --verbose homebridge@$HOMEBRIDGE_VERSION homebridge-config-ui-x
+RUN npm install --global --unsafe-perm --verbose homebridge-ring homebridge-nest homebridge-rainbird homebridge-tplink-smarthome
+# https://broadlink.kiwicam.nz
+RUN npm install --global --unsafe-perm --verbose homebridge-broadlink-rm-pro
 
-# RUN hb-service update-node
-# homebridge-eufy-robovac
+COPY homebridge-service-generator /usr/sbin/homebridge-service-generator
+RUN ln -s /usr/local/lib/node_modules/homebridge/bin/homebridge /usr/sbin/homebridge-bridge
+RUN ln -s /usr/local/lib/node_modules/homebridge-config-ui-x/dist/bin/standalone.js /usr/sbin/homebridge-ui
 
-RUN npm install -g --unsafe-perm homebridge-ring \
-                                 homebridge-nest \
-                                 homebridge-tplink-smarthome
-
-ARG USER=homebridge
-RUN addgroup $USER \
- && adduser -D -s /bin/sh -G $USER $USER \
- && echo "$USER:$USER" | chpasswd
-
-RUN chown homebridge:homebridge -R /home/homebridge \
- && chmod 777 -R /opt/homebridge-data
+RUN /bin/mkdir -p /opt/$USER
+RUN /bin/chown -R $USER:$USER /opt/$USER /var/backup /tmp/backup /mnt/volumes/backup
 
 USER $USER
-WORKDIR /home/homebridge
-
-RUN mkdir /home/homebridge/.homebridge \
- && ln -s /opt/homebridge-data/config.json /home/homebridge/.homebridge/config.json
-
-CMD ["/usr/local/bin/homebridge", "-D", "-Q"]
-
+WORKDIR /home/$USER
 
