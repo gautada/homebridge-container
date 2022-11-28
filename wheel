@@ -1,5 +1,2 @@
-%wheel         ALL = (ALL) NOPASSWD: /usr/sbin/avahi-daemon
-
-%wheel         ALL = (ALL) NOPASSWD: /usr/bin/dbus-daemon
-
+# Not sure if this is needed.
 %wheel         ALL = (ALL) NOPASSWD: /usr/sbin/homebridge-service-generator
