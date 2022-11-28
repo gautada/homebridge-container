@@ -61,13 +61,13 @@ COPY wheel  /etc/container/wheel
 ARG HOMEBRIDGE_VERSION=1.4.1
 # Packages that were remove for minimal install "avahi-compat-libdns_sd avahi-dev dbus"
 # Maybe run avahi as a separate container/pod
-RUN apk add --no-cache nodejs npm nmap python3 build-base
+RUN apk add --no-cache jq nodejs npm nmap openssl build-base
 RUN npm install --global --unsafe-perm --verbose homebridge@$HOMEBRIDGE_VERSION homebridge-config-ui-x
 RUN npm install --global --unsafe-perm --verbose homebridge-ring homebridge-nest homebridge-rainbird homebridge-tplink-smarthome
 # https://broadlink.kiwicam.nz
 RUN npm install --global --unsafe-perm --verbose homebridge-broadlink-rm-pro
 
-COPY homebridge-service-generator /usr/sbin/homebridge-service-generator
+COPY homebridge-service-generator /usr/bin/homebridge-service-generator
 RUN ln -s /usr/local/lib/node_modules/homebridge/bin/homebridge /usr/sbin/homebridge-bridge
 RUN ln -s /usr/local/lib/node_modules/homebridge-config-ui-x/dist/bin/standalone.js /usr/sbin/homebridge-ui
 

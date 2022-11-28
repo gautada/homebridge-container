@@ -15,7 +15,7 @@ if [ -z "$ENTRYPOINT_PARAMS" ] ; then
   # /usr/local/bin/homebridge --debug --no-qrcode --user-storage-path /opt/homebridge
   # /usr/local/lib/node_modules/homebridge/bin/homebridge --debug --no-qrcode --user-storage-path /opt/homebridge
   # /usr/sbin/homebridge-bridge --debug --no-qrcode --user-storage-path /opt/homebridge
-  /usr/local/lib/node_modules/homebridge/bin/homebridge --debug --no-qrcode --user-storage-path /mnt/volumes/container
+  /usr/local/lib/node_modules/homebridge/bin/homebridge --debug --no-qrcode --user-storage-path /mnt/volumes/container | tee -a /mnt/volumes/container/homebridge.log >> /dev/stdout 
   # TEST="$(/usr/bin/pgrep /usr/sbin/crond)"
   # if [ $? -eq 0 ] ; then
   #  # Kill the background cron service
