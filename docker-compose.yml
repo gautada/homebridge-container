@@ -4,8 +4,8 @@ services:
     build:
       args:
         ALPINE_VERSION: "latest"
-        HOMEBRIDGE_VERSION: "1.5.1"
-      context: .
+        HOMEBRIDGE_VERSION: "1.6.0"
+      context:
       dockerfile: Containerfile
       no_cache: true
       tags:

@@ -10,14 +10,14 @@ steps:
 - name: build
   environment:
     ALPINE_VERSION: latest
-    HOMEBRIDGE_VERSION: 1.5.1
+    HOMEBRIDGE_VERSION: 1.6.0
   commands:
   - podman build --build-arg ALPINE_VERSION=$ALPINE_VERSION --build-arg HOMEBRIDGE_VERSION=$HOMEBRIDGE_VERSION --format docker --file Containerfile --label revision="$(git rev-parse HEAD)" --label version="$(date +%Y.%m.%d)" --no-cache --tag homebridge:drone .
 
 - name: publish
   environment:
     CONTAINER_NAME: "homebridge"
-    CONTAINER_VERSION: 1.5.1
+    CONTAINER_VERSION: 1.6.0
     DOCKERIO_USERNAME:
       from_secret: username.docker.io
     DOCKERIO_PASSWORD:
