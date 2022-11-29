@@ -1,0 +1,40 @@
+@startuml
+!include <C4/C4.puml>
+!include <C4/C4_Context.puml>
+!include <C4/C4_Container.puml>
+!include <C4/C4_Component.puml>
+!include <C4/C4_Dynamic.puml>
+!include <C4/C4_Deployment.puml>
+
+title "Context Diagram - Homebridge"
+
+Boundary("home", "Home", "The defined home in HomeKit") {
+ Person_Ext("user", "Member", "A member of the home defined in HomeKit")
+ Container_Ext("homekit", "HomeKit", "Applie HomeKit enables your app to coordinate and control home automation accessories from multiple vendors to present a coherent, user-focused interface.", $link="https://developer.apple.com/documentation/homekit")
+ Container("homebridge", "Homebridge", "Integrate with smart home devices that do not natively support HomeKit.", $link="https://homebridge.io")
+ Container_Ext("thermostat", "Thermostat", "Nest Thermostat")
+ Container_Ext("doorbell", "Doorbell", "Ring Doorbell")
+ Container_Ext("sprinkler", "Lawn Sprinkler", "Rainbird Sprinkler Control")
+ Container_Ext("blinds", "Shades and Blinds", "XYZ - Blinds")
+ Container_Ext("stereo", "Stereo Receiver", "Yamaha Receiver")
+ Container_Ext("plugs", "Electrical Plugs", "TP Link Plugs")
+ Person("admin", "Admin", "Configures the homebridge user interface")
+}
+Rel("user", "homekit", "Configures")
+Rel("homekit", "user", "Status")
+Rel("homekit", "homebridge", "Commands")
+Rel("admin", "homebridge", "Configures", "https")
+Rel("homebridge", "homekit", "Status")
+Rel("homebridge", "thermostat", "Controls")
+Rel("thermostat", "homebridge", "Status")
+Rel("homebridge", "doorbell", "Controls")
+Rel("doorbell", "homebridge", "Status")
+Rel("homebridge", "sprinkler", "Controls")
+Rel("sprinkler", "homebridge", "Status")
+Rel("homebridge", "blinds", "Controls")
+Rel("blinds", "homebridge", "Status")
+Rel("homebridge", "stereo", "Controls")
+Rel("stereo", "homebridge", "Status")
+Rel("homebridge", "plugs", "Controls")
+Rel("plugs", "homebridge", "Status")
+@enduml

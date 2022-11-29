@@ -1,8 +1,94 @@
 # Homebridge
 
+## Abstract
+
 [Homebridge](https://homebridge.io) brings HomeKit support where there is none. Homebridge allows you to integrate with smart home devices that do not natively support HomeKit. There are over 2,000 Homebridge plugins supporting thousands of different smart accessories.
 
-flipflop
+## Features
+
+Hombridge offers a set of plug-in to incorporate specific device support.  Inuded are my specific devices that I use personally and should be considered for reference. 
+
+- UI
+- Thrmostat - Nest
+- Doorbell(Camera) - Ring
+- Remote Control - BroadLink RM Pro
+- Lawn Sprinkler - Rainbird
+- Electrical Outlets - TPLink Smarthome
+`
+
+### Feature Detail
+
+The included plug-in descriptions with links to various sub-projects that provide the details for specific devices.
+
+#### Thermostat
+
+[Homebridge Nest Thermostat](https://github.com/chrisjshull/homebridge-nest) Integrate your [Nest Thermostat](https://store.google.com/us/category/google_nest?hl=en-US), Temperature Sensors, Nest Protect, and Nest x Yale Lock devices into your HomeKit system. Both Nest Accounts (pre-August 2019) and Google Accounts are supported.
+
+#### Doorbell(Camera)
+
+[Homebridge Ring](https://github.com/dgreif/ring/tree/main/packages/homebridge-ring) provides a platform for [Ring Doorbells](https://ring.com/doorbell-cameras), Ring Cameras, the Ring Alarm System, Ring Smart Lighting, and third party devices that connect to the Ring Alarm System.
+
+#### Remote Control
+
+[Homebridge Broadlink RM](https://github.com/kiwi-cam/homebridge-broadlink-rm) this plugin allows you to control your RM Mini and RM Pro with HomeKit using the Home app and Siri. This is used to control non-smart devices.
+
+#### Lawn Sprinkler
+
+[Homebridge Rainbird](https://github.com/donavanbecker/homebridge-rainbird) allows you to access your RainBird Controller from HomeKit with Homebridge.
+
+#### Electrical Outlets
+
+[Homebridge TPLink Smarthome](https://github.com/plasticrake/homebridge-tplink-smarthome) Allows the control of TPLink Smarthome plugs.
+
+## Environment
+
+###  Development
+
+All development is controled by the default `docker-compose.yml` capability.
+ 
+### Testing
+
+## Architecture
+
+### Context
+
+![Context Diagram](https://plantuml.com/plantuml/svg/bLJ9JXmn4BtFLnIj7422cGkdA8d49X518ZHm2BaWJxjcsi9sMROR64NvzrIxzraGENMvbkTNLSzze6okIudmvU9qTd4wTQNHtoO7O-_J1Tc8R_6Tg50M_TwuSMJHxgk_N5jXLBulYaxJslJbawYYHiWQKd2fnCeB0oTmJGONNiaLPfF9EPLM2hy-p0fsPyUGNJVVXm91uf8PIwXYe6mglL4nEu8_4xX37yW-NRt5mwmCwAkY7sWMjNK69jb0IuWCbI1Ql27K1Bh9r5XLvZD76YutjNdcd5RObW5QiT0OO4sb1-4SH8ASo4jbHKGGLlBHHa-wlbcKaOo8YYo8FCSGo2ikNteoO4eTbUDXlQ2Lv4E5vJm67YO8XYdGitaCLPCdIyhvMxKGqIz5ZbDczqah-_mrAs9quVDi9l45DJbUDJFJECt9p2JNLUj976PjZyFkwywRpJJDzwVlV1yla7jxLR60O8IFxL1V57V4KnOH986b23m4nHpM44hdY3ERkUqWsrywLRHZ7RmyRoWmyKOLWzDF3146hkrgoJjPeDPLzkN0dYkxWiwnNHUSPvQwrjAjUBLmF_JCENMXlEoz2O3NlGDhmGtBK9NT5qBof2frd7VENu-_-LKqvnrCUCz8gJfPCCSSURY9nwCmeX2zQxlSwNALhhdIc4UlSg7XhlKztC4jqsySH-sREio4DCecsRS6moxLglHfqVLpghUMPDdBaL7-JkQe-pSvU4yz2AUbf46mpR_dJPQx4iRovF-L4VN8Kc97UJEjkxAALQ8RGlU9Wuks6VHfOpasI-zonz5nvNkeGvbkOWvZ7qSS2NWJSXJyE6Olv4t0Fl8V33jXRz7h8Xz7wtI-2TO5TcFz0m00)
+
+### Container
+
+{![Container Diagram(Link to image)}
+
+### Components
+
+{![Component Diagram(Link to image)}
+
+## Administration
+
+### Checklist
+
+- [ ] README conforms to the [gist](https://gist.github.com/gautada/ec549c846e8e50daf355d01b06eb0665)
+- [ ] .gitignore conforms to the [gist](https://gist.github.com/gautada/3a0a4a76d3c7e4539e71fc02c7f599ad)
+- [ ] Confirm the drone.yml file
+- [ ] Volume folders are present (development-volume & backup-volume)
+- [ ] docker-compose(.yml) works
+- [ ] Manifst folder present (and origin to private repository is correct
+- [ ] Issue List is linked to proper URI
+- [ ] Signoff ({date and signature of last check})
+- [ ] Confirm backup (maybe add to testing layer)
+- [ ] Confirm healthcheck (maybe add to testing layer)
+- [ ] Regenerate all architecture images
+
+
+### Issues
+
+The official to list is kept in a [GitHub Issue List]{(https://github.com/gautada/{repo}/issues)}
+
+## Notes
+
+
+
+
+
 
 UI: https://github.com/oznu/homebridge-config-ui-x/wiki/Config-Options
 https://www.devwithimagination.com/2020/02/02/running-homebridge-on-docker-without-host-network-mode/
