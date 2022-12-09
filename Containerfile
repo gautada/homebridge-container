@@ -51,7 +51,7 @@ COPY entrypoint /etc/container/entrypoint
 COPY backup /etc/container/backup
 
 # ╭――――――――――――――――――――╮
-# │ SUDO               │
+# │ PRIVILEGED         │
 # ╰――――――――――――――――――――╯
 COPY wheel  /etc/container/wheel
 
