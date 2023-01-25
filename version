@@ -1,0 +1,3 @@
+#!/bin/ash
+
+/usr/local/lib/node_modules/homebridge/bin/homebridge  --version
