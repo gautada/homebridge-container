@@ -17,10 +17,10 @@ app_version() {
 
 log "-i" "entrypoint" "Launch Application - $APP_NAME($(app_version))"
 if [ -z "$@" ] ; then
- /usr/local/lib/node_modules/homebridge/bin/homebridge --debug
+ /usr/local/lib/node_modules/homebridge/bin/homebridge --debug | /usr/bin/tee /mnt/volumes/container/homebridge.log >> /dev/stdout
  return 1
 else
   log "-i" "entrypoint" "Launch Application [BACKGROUND]"
-  /usr/local/lib/node_modules/homebridge/bin/homebridge --debug > /mnt/volumes/container/.log 2>&1 &
+  /usr/local/lib/node_modules/homebridge/bin/homebridge --debug > /mnt/volumes/container/homebridge.log 2>&1 &
 return 0
 fi
