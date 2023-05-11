@@ -11,27 +11,13 @@ services:
       no_cache: true
       tags:
         - "homebridge:dev"
-    image: "gautada/homebridge:dev"
+    image: "wqhomebridge:dev"
     environment:
       - SYSTEM_ENVIRONMENT=DEVELOPMENT
     hostname: "homebridge"
     ports:
       - "8888:8080"
     volumes:
-      - "container:/mnt/volumes/container"
-      - "backup:/mnt/volumes/backup"
-        
-volumes:
-  container:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /mnt/volumes/container/development/container
-  backup:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /mnt/volumes/container/development/backup
+      - "/mnt/volumes/container/Compose/Container:/mnt/volumes/container"
+      - "/mnt/volumes/container/Compose/Backup:/mnt/volumes/backup"
       
