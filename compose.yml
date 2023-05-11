@@ -11,7 +11,8 @@ services:
       no_cache: true
       tags:
         - "homebridge:dev"
-    image: "wqhomebridge:dev"
+        - "gautada/homebridge:dev"
+    image: "homebridge:dev"
     environment:
       - SYSTEM_ENVIRONMENT=DEVELOPMENT
     hostname: "homebridge"
