@@ -1,0 +1,86 @@
+ARG ALPINE_VERSION="3.17.0"
+
+FROM gautada/alpine:$ALPINE_VERSION as container
+# ╭――――――――――――――――――――╮
+# │ METADATA           │
+# ╰――――――――――――――――――――╯
+LABEL source="https://github.com/gautada/homebridge-container.git"
+LABEL maintainer="Adam Gautier <adam@gautier.org>"
+LABEL description="A container for a Homebridge bridge to Apple HomeKit"
+
+# ╭――――――――――――――――――――╮
+# │ STANDARD CONFIG    │
+# ╰――――――――――――――――――――╯
+ARG USER="podman"
+RUN /usr/sbin/usermod --login $USER --home /home/$USER --move-home alpine
+RUN /usr/sbin/groupmod --new-name $USER alpine
+
+# ╭――――――――――――――――――――╮
+# │ APPLICATION        │
+# ╰――――――――――――――――――――╯
+RUN /sbin/apk add --no-cache jq nodejs npm nmap openssl build-base
+
+# ARG HOMEBRIDGE_VERSION=1.6.0
+RUN /usr/bin/npm install --global --unsafe-perm \
+#    --verbose homebridge@$HOMEBRIDGE_VERSION homebridge-config-ui-x
+    --verbose homebridge \ 
+              homebridge-config-ui-x
+RUN /usr/bin/npm install --global --unsafe-perm \
+    --verbose homebridge-ring \
+              homebridge-nest \
+              homebridge-rainbird \
+              homebridge-tplink-smarthome \
+              homebridge-broadlink-rm-pro
+
+RUN /bin/ln -fsv /usr/local/lib/node_modules/homebridge/bin/homebridge \
+                 /usr/sbin/homebridge-bridge
+
+RUN /bin/ln -fsv /usr/local/lib/node_modules/homebridge-config-ui-x/dist/bin/standalone.js \
+                 /usr/sbin/homebridge-ui
+
+RUN /bin/ln -fsv /mnt/volumes/configmaps/config.json \
+                 /home/$USER/.homebridge/config.json \
+ && /bin/ln -fsv /mnt/volumes/configmaps/config.json \
+                 /etc/container/config.json \
+ && /bin/ln -fsv /mnt/volumes/container/config.json \
+                 /mnt/volumes/configmaps/config.json
+
+RUN /bin/ln -fsv /mnt/volumes/configmaps/auth.json \
+                 /home/$USER/.homebridge/auth.json \
+ && /bin/ln -fsv /mnt/volumes/configmaps/auth.json \
+                 /etc/container/auth.json \
+ && /bin/ln -fsv /mnt/volumes/container/auth.json \
+                 /mnt/volumes/configmaps/auth.json
+
+# ╭――――――――――――――――――――╮
+# │ STANDARD CONFIG    │
+# ╰――――――――――――――――――――╯
+COPY backup /etc/container/backup
+COPY homebridge.health /etc/container/health.d/homebridge.health
+COPY entrypoint /etc/container/entrypoint
+COPY privileges /etc/container/privileges
+
+# ╭――――――――――――――――――――╮
+# │ CONTAINER          │
+# ╰――――――――――――――――――――╯
+USER $USER
+WORKDIR /home/$USER
+
+RUN /bin/mkdir -p /home/$USER/.homebridge \
+ && chown $USER:$USER -R /home/$USER/.homebridge
+ 
+# ╭――――――――――――――――――――╮
+# │FINAL CONTAINER     │
+# ╰――――――――――――――――――――╯
+FROM scratch
+COPY --from=container / /
+ENTRYPOINT ["/usr/bin/container-entrypoint"]
+VOLUME /mnt/volumes/backup
+VOLUME /mnt/volumes/configmaps
+VOLUME /mnt/volumes/container
+VOLUME /mnt/volumes/secrets/namespace
+VOLUME /mnt/volumes/secrets/container
+EXPOSE 8080/tcp
+EXPOSE 8888/tcp
+USER podman
+WORKDIR /home/podman

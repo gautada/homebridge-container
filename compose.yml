@@ -5,20 +5,14 @@ services:
       args:
         ALPINE_VERSION: "latest"
         CONTAINER_VERSION: "1.6.1"
-        HOMEBRIDGE_VERSION: "1.6.1"
       context: .
-      dockerfile: Containerfile
+      dockerfile: container.build
       no_cache: true
       tags:
         - "homebridge:dev"
         - "gautada/homebridge:dev"
     image: "homebridge:dev"
-    environment:
-      - SYSTEM_ENVIRONMENT=DEVELOPMENT
     hostname: "homebridge"
     ports:
       - "8888:8080"
-    volumes:
-      - "/mnt/volumes/container/Compose/Container:/mnt/volumes/container"
-      - "/mnt/volumes/container/Compose/Backup:/mnt/volumes/backup"
       

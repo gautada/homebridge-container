@@ -1,2 +1,3 @@
 # Not sure if this is needed.
+%wheel         ALL = (ALL) NOPASSWD: /usr/sbin/crond
 %wheel         ALL = (ALL) NOPASSWD: /usr/sbin/homebridge-service-generator
