@@ -70,7 +70,7 @@ COPY privileges /etc/container/privileges
 USER $USER
 WORKDIR /home/$USER
 
- RUN /bin/mkdir -p /home/$USER/.homebridge \
+RUN /bin/mkdir -p /home/$USER/.homebridge \
  && /bin/ln -fsv /etc/container/config.json \
                  /home/$USER/.homebridge/config.json \
  && /bin/ln -fsv /etc/container/auth.json \
@@ -89,5 +89,5 @@ VOLUME /mnt/volumes/secrets/namespace
 VOLUME /mnt/volumes/secrets/container
 EXPOSE 8080/tcp
 EXPOSE 8888/tcp
-USER podman
-WORKDIR /home/podman
+USER homebridge
+WORKDIR /home/homebridge
