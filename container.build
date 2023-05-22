@@ -88,6 +88,5 @@ VOLUME /mnt/volumes/container
 VOLUME /mnt/volumes/secrets/namespace
 VOLUME /mnt/volumes/secrets/container
 EXPOSE 8080/tcp
-EXPOSE 8888/tcp
 USER homebridge
 WORKDIR /home/homebridge
