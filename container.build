@@ -11,7 +11,7 @@ LABEL description="A container for a Homebridge bridge to Apple HomeKit"
 # ╭――――――――――――――――――――╮
 # │ STANDARD CONFIG    │
 # ╰――――――――――――――――――――╯
-ARG USER="podman"
+ARG USER="homebridge"
 RUN /usr/sbin/usermod --login $USER --home /home/$USER --move-home alpine
 RUN /usr/sbin/groupmod --new-name $USER alpine
 
@@ -38,19 +38,6 @@ RUN /bin/ln -fsv /usr/local/lib/node_modules/homebridge/bin/homebridge \
 RUN /bin/ln -fsv /usr/local/lib/node_modules/homebridge-config-ui-x/dist/bin/standalone.js \
                  /usr/sbin/homebridge-ui
 
-RUN /bin/ln -fsv /mnt/volumes/configmaps/config.json \
-                 /home/$USER/.homebridge/config.json \
- && /bin/ln -fsv /mnt/volumes/configmaps/config.json \
-                 /etc/container/config.json \
- && /bin/ln -fsv /mnt/volumes/container/config.json \
-                 /mnt/volumes/configmaps/config.json
-
-RUN /bin/ln -fsv /mnt/volumes/configmaps/auth.json \
-                 /home/$USER/.homebridge/auth.json \
- && /bin/ln -fsv /mnt/volumes/configmaps/auth.json \
-                 /etc/container/auth.json \
- && /bin/ln -fsv /mnt/volumes/container/auth.json \
-                 /mnt/volumes/configmaps/auth.json
 
 # ╭――――――――――――――――――――╮
 # │ STANDARD CONFIG    │
@@ -69,6 +56,19 @@ WORKDIR /home/$USER
 RUN /bin/mkdir -p /home/$USER/.homebridge \
  && chown $USER:$USER -R /home/$USER/.homebridge
  
+RUN /bin/ln -fsv /mnt/volumes/configmaps/config.json \
+                 /home/$USER/.homebridge/config.json \
+ && /bin/ln -fsv /mnt/volumes/configmaps/config.json \
+                 /etc/container/config.json \
+ && /bin/ln -fsv /mnt/volumes/container/config.json \
+                 /mnt/volumes/configmaps/config.json
+
+RUN /bin/ln -fsv /mnt/volumes/configmaps/auth.json \
+                 /home/$USER/.homebridge/auth.json \
+ && /bin/ln -fsv /mnt/volumes/configmaps/auth.json \
+                 /etc/container/auth.json \
+ && /bin/ln -fsv /mnt/volumes/container/auth.json \
+                 /mnt/volumes/configmaps/auth.json
 # ╭――――――――――――――――――――╮
 # │FINAL CONTAINER     │
 # ╰――――――――――――――――――――╯
