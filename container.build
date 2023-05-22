@@ -39,11 +39,22 @@ RUN /sbin/apk add --no-cache nodejs python3
 COPY --from=build /usr/local/lib/node_modules /usr/local/lib/node_modules
 
 RUN /bin/ln -fsv /usr/local/lib/node_modules/homebridge/bin/homebridge \
-                 /usr/sbin/homebridge-bridge
+                 /usr/sbin/homebridge-bridge \
 
-RUN /bin/ln -fsv /usr/local/lib/node_modules/homebridge-config-ui-x/dist/bin/standalone.js \
-                 /usr/sbin/homebridge-ui
+ && /bin/ln -fsv /usr/local/lib/node_modules/homebridge-config-ui-x/dist/bin/standalone.js \
+                 /usr/sbin/homebridge-ui 
 
+ # THe are just symlinks and some occur outside of HOME so root
+ # must make the symlink
+RUN /bin/ln -fsv /mnt/volumes/configmaps/config.json \
+                 /etc/container/config.json \
+ && /bin/ln -fsv /mnt/volumes/container/config.json \
+                 /mnt/volumes/configmaps/config.json \
+
+ && /bin/ln -fsv /mnt/volumes/configmaps/auth.json \
+                 /etc/container/auth.json \
+ && /bin/ln -fsv /mnt/volumes/container/auth.json \
+                 /mnt/volumes/configmaps/auth.json 
 
 # ╭――――――――――――――――――――╮
 # │ STANDARD CONFIG    │
@@ -59,22 +70,12 @@ COPY privileges /etc/container/privileges
 USER $USER
 WORKDIR /home/$USER
 
-RUN /bin/mkdir -p /home/$USER/.homebridge \
- && chown $USER:$USER -R /home/$USER/.homebridge
- 
-RUN /bin/ln -fsv /mnt/volumes/configmaps/config.json \
+ RUN /bin/mkdir -p /home/$USER/.homebridge \
+ && /bin/ln -fsv /etc/container/config.json \
                  /home/$USER/.homebridge/config.json \
- && /bin/ln -fsv /mnt/volumes/configmaps/config.json \
-                 /etc/container/config.json \
- && /bin/ln -fsv /mnt/volumes/container/config.json \
-                 /mnt/volumes/configmaps/config.json
+ && /bin/ln -fsv /etc/container/auth.json \
+                 /home/$USER/.homebridge/auth.json 
 
-RUN /bin/ln -fsv /mnt/volumes/configmaps/auth.json \
-                 /home/$USER/.homebridge/auth.json \
- && /bin/ln -fsv /mnt/volumes/configmaps/auth.json \
-                 /etc/container/auth.json \
- && /bin/ln -fsv /mnt/volumes/container/auth.json \
-                 /mnt/volumes/configmaps/auth.json
 # ╭――――――――――――――――――――╮
 # │FINAL CONTAINER     │
 # ╰――――――――――――――――――――╯
