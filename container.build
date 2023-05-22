@@ -1,5 +1,21 @@
 ARG ALPINE_VERSION="3.17.0"
 
+FROM gautada/alpine:$ALPINE_VERSION as build
+# jq nodejs nmap openssl
+RUN /sbin/apk add --no-cache npm build-base
+
+# ARG HOMEBRIDGE_VERSION=1.6.0
+RUN /usr/bin/npm install --global --unsafe-perm \
+#    --verbose homebridge@$HOMEBRIDGE_VERSION homebridge-config-ui-x
+    --verbose homebridge \ 
+              homebridge-config-ui-x
+RUN /usr/bin/npm install --global --unsafe-perm \
+    --verbose homebridge-ring \
+              homebridge-nest \
+              homebridge-rainbird \
+              homebridge-tplink-smarthome \
+              homebridge-broadlink-rm-pro
+
 FROM gautada/alpine:$ALPINE_VERSION as container
 # ╭――――――――――――――――――――╮
 # │ METADATA           │
@@ -18,19 +34,9 @@ RUN /usr/sbin/groupmod --new-name $USER alpine
 # ╭――――――――――――――――――――╮
 # │ APPLICATION        │
 # ╰――――――――――――――――――――╯
-RUN /sbin/apk add --no-cache jq nodejs npm nmap openssl build-base
+RUN /sbin/apk add --no-cache nodejs
 
-# ARG HOMEBRIDGE_VERSION=1.6.0
-RUN /usr/bin/npm install --global --unsafe-perm \
-#    --verbose homebridge@$HOMEBRIDGE_VERSION homebridge-config-ui-x
-    --verbose homebridge \ 
-              homebridge-config-ui-x
-RUN /usr/bin/npm install --global --unsafe-perm \
-    --verbose homebridge-ring \
-              homebridge-nest \
-              homebridge-rainbird \
-              homebridge-tplink-smarthome \
-              homebridge-broadlink-rm-pro
+COPY --from=build /usr/local/lib/node_modules /usr/local/lib/node_modules
 
 RUN /bin/ln -fsv /usr/local/lib/node_modules/homebridge/bin/homebridge \
                  /usr/sbin/homebridge-bridge
